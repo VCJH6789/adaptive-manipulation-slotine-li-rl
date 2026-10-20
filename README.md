@@ -38,7 +38,7 @@ envs/
                              34-D observation, 1-D hand-synergy action (open ↔ close)
   g1_grasp_train.py          Registers the env as G1-Grasp-v0 (work in progress, see below)
 tools/
-  system_identification.py   Moves one joint at a time with a sine wave to inspect each joint's motion
+  joint_motion_test.py       Moves one joint at a time with a sine wave to inspect each joint's motion
   open_close_test.py         Sweeps the hand synergy to check each finger's closing direction
 ```
 
@@ -56,7 +56,7 @@ use `isaaclab.sh` on Linux). Isaac Lab launcher flags such as `--headless` and `
 isaaclab.bat -p <path-to-repo>/tools/open_close_test.py --num_envs 1
 
 # Move each left-arm and hand joint in turn with a sine wave
-isaaclab.bat -p <path-to-repo>/tools/system_identification.py --num_envs 1
+isaaclab.bat -p <path-to-repo>/tools/joint_motion_test.py --num_envs 1
 ```
 
 `envs/g1_grasp_train.py` is not finished. It registers the G1 grasp env as a Gymnasium environment

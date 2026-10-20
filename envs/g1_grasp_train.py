@@ -6,7 +6,7 @@ from isaaclab.app import AppLauncher
 # =========================================================
 
 parser = argparse.ArgumentParser(
-    description="G1 System Identification"
+    description="G1 grasp training (work in progress)"
 )
 
 # Our own custom argument

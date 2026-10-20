@@ -6,7 +6,7 @@ from isaaclab.app import AppLauncher
 # =========================================================
 
 parser = argparse.ArgumentParser(
-    description="G1 System Identification"
+    description="G1 hand open/close synergy test"
 )
 
 # Our own custom argument
