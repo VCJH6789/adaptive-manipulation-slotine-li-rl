@@ -15,7 +15,7 @@ guarantees bounded parameter estimates and convergence of the tracking error.
 - [ ] Add arm actions so the policy can lift, not only grasp (current env: fixed base, 1-D hand synergy action only)
 - [ ] Randomize object mass during training (currently fixed at 0.2 kg)
 - [ ] Connecting PPO to the G1 grasp environment for training (in progress; `g1_grasp_train.py` is a placeholder loop)
-- [x] Pinocchio gravity torques for the G1 left arm checked against Isaac Sim (see [`validation/`](validation/README.md))
+- [ ] Validate Pinocchio's model of the G1 left arm against Isaac Sim (in progress: first gravity check at the default pose, see [`validation/`](validation/README.md))
 - [ ] Pinocchio-based online computation of the dynamics regressor (in progress)
 - [ ] Slotine–Li adaptive control law (theory studied; implementation next)
 - [ ] Combining the adaptive controller with the learned policy
@@ -52,8 +52,8 @@ validation/                  Checks that Pinocchio's model of the G1 arm matches
 The adaptive controller will compute the arm's joint torques from a Pinocchio model of the robot,
 so that model must match the robot simulated in Isaac Sim. Otherwise the stability analysis no
 longer applies, and the adaptation law would absorb arm-model errors into its payload estimate.
-[`validation/`](validation/README.md) holds a standalone check, separate from training, that
-starts with gravity: the left arm is driven by Pinocchio's gravity torques and by Isaac's own, and
+[`validation/`](validation/README.md) holds a standalone check, separate from training and still
+in progress, that starts with gravity: the left arm is driven by Pinocchio's gravity torques and by Isaac's own, and
 the two runs are compared. See [`validation/README.md`](validation/README.md) for the setup,
 how to run it and the figures.
 

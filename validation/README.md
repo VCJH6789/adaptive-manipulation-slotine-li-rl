@@ -1,5 +1,8 @@
 # Gravity validation: Pinocchio vs Isaac Sim
 
+> Work in progress. The first results below are from a single arm configuration (Isaac Lab's
+> default pose); a broader comparison is in progress.
+
 This check confirms that the Pinocchio model used by the adaptive controller computes the same
 gravity torques for the G1 left arm as the robot simulated in Isaac Sim.
 
@@ -103,8 +106,7 @@ confirms that the left arm is in effort mode with its PD drive off.
 ![Left arm under zero torque](figures/Left_arm_under_zero_torque.png)
 
 **`gravity`: the arm holds its pose.** With Isaac's own gravity torques, the joints stay close to
-their initial positions. A small, slow drift is visible in this run, mainly in `shoulder_yaw` and
-`elbow_pitch`.
+their initial positions.
 
 ![Left arm under Isaac gravity compensation](figures/Left_arm_under_gravity_compensation.png)
 
@@ -115,7 +117,7 @@ joints stay close to their initial positions.
 
 **Overlay.** Joint positions under Pinocchio's torques (solid) and Isaac's torques (dashed). At this
 scale the two sets of curves overlap, which indicates that Pinocchio's gravity torques agree with
-Isaac Sim's (PhysX) for the left arm.
+Isaac Sim's (PhysX) for the left arm at this pose.
 
 ![Pinocchio vs Isaac gravity compensation](figures/pin_isaac_gravity_compensation.png)
 ## Notes and limitations
@@ -127,6 +129,8 @@ Isaac Sim's (PhysX) for the left arm.
 - **Not in the URDF:** joint armature, friction and damping. They do not affect gravity, but
   armature adds to the effective joint inertia, so it must be added to $M(q)$ for the full
   controller.
+- **One configuration so far.** The arm starts at, and holds, Isaac Lab's default pose, so these
+  runs test $g(q)$ at that pose only.
 - **Single environment.** Pinocchio runs on the CPU for environment 0 only, and only that
   environment is logged.
 - **Unused actions.** The runner still sends an action signal to the environment, but this
