@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+.venv-*/
+.env
+
+# Training outputs (logs, checkpoints, experiment trackers)
+logs/
+runs/
+outputs/
+wandb/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Media
+*.mp4
+*.gif
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Private notes
+GITHUB_UPLOAD_BRIEF.md
