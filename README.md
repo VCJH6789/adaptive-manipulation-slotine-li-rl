@@ -10,8 +10,10 @@ guarantees bounded parameter estimates and convergence of the tracking error.
 
 ## Status
 - [x] PPO re-implemented from scratch in PyTorch, following the rsl_rl architecture
+- [x] Joint-motion and hand-synergy test scripts for the G1 left arm and hand
 - [x] Unitree G1 arm–hand grasp environment defined in Isaac Lab (NVIDIA Isaac Sim 6.0)
-- [x] Joint-direction and hand-synergy test scripts for the G1 left arm and hand
+- [ ] Add arm actions so the policy can lift, not only grasp (current env: fixed base, 1-D hand synergy action only)
+- [ ] Randomize object mass during training (currently fixed at 0.2 kg)
 - [ ] Connecting PPO to the G1 grasp environment for training (in progress; `g1_grasp_train.py` is a placeholder loop)
 - [ ] Pinocchio-based online computation of the dynamics regressor (in progress)
 - [ ] Slotine–Li adaptive control law (theory studied; implementation next)
@@ -35,7 +37,8 @@ ppo/                         PPO written from scratch in PyTorch
   rollout_collector.py       Rollout collection with timeout bootstrapping
 envs/
   g1_grasp_build.py          Isaac Lab DirectRLEnv: fixed-base G1, left arm + hand, cube on a platform,
-                             34-D observation, 1-D hand-synergy action (open ↔ close)
+                             34-D observation, 1-D hand-synergy action (open ↔ close).
+                             First step: grasp only. Arm control for lifting comes next.
   g1_grasp_train.py          Registers the env as G1-Grasp-v0 (work in progress, see below)
 tools/
   joint_motion_test.py       Moves one joint at a time with a sine wave to inspect each joint's motion
