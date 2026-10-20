@@ -5,3 +5,7 @@
 
 torch==2.10.0        # developed with the CUDA 12.8 build (2.10.0+cu128)
 gymnasium==1.2.1
+pin==4.1.0           # Pinocchio rigid-body dynamics
+warp-lang==1.13.0    # used to read Isaac's gravity compensation forces
+matplotlib==3.10.8   # validation plots
+usd-core==25.11      # pxr, for tools/usd_to_urdf.py

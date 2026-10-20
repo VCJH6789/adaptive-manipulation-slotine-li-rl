@@ -20,6 +20,9 @@ checkpoints/
 *.pth
 *.ckpt
 
+# Generated robot model (built from Isaac Lab's G1 asset; not redistributed)
+*.urdf
+
 # Media
 *.mp4
 *.gif
