@@ -19,7 +19,7 @@ t = np.arange(len(e_fixed)) * dt
 fig, axes = plt.subplots(2, 1, sharex=True, figsize=(8, 6))
 
 axes[0].plot(t, e_fixed[:], linestyle='--', label="No_Adaptation")
-axes[0].plot(t, e_adapt[:], label="Adaptative Slotine-Li")
+axes[0].plot(t, e_adapt[:], label="Adaptive Slotine-Li")
 axes[0].set_ylabel("Error ||q - q_des|| (rad)")
 axes[0].legend()
 
@@ -31,7 +31,7 @@ axes[1].set_ylabel("Estimated Payload Mass (kg)")
 axes[1].set_xlabel("Time (s)")
 axes[1].legend()
 
-fig.suptitle("Unknow 0.5 kg payload on G1 left palm")
+fig.suptitle("Unknown 0.5 kg payload on G1 left palm")
 plt.tight_layout()
 FIG_DIR.mkdir(exist_ok=True)
 plt.savefig(FIG_DIR / "payload_adaptation.png")
