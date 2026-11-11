@@ -90,9 +90,9 @@ weight, reaching about 0.033 rad at the elbow pitch and 0.018 rad at the shoulde
 
 ![Fixed vs adaptive controller under an unknown 0.5 kg payload](figures/payload_adaptation.png)
 
-*Top: tracking error norm $\lVert q - q_d\rVert$ without adaptation (dashed) and with Slotine–Li
-adaptation (solid). Bottom: estimated payload mass $\hat m$ (first entry of
-$\hat\theta_{\text{obj}}$) against the true 0.5 kg. 60 s.*
+*Top: tracking error norm $`\lVert q - q_d\rVert`$ without adaptation (dashed) and with Slotine–Li
+adaptation (solid). Bottom: estimated payload mass $`\hat m`$ (first entry of
+$`\hat\theta_{\text{obj}}`$) against the true 0.5 kg. 60 s.*
 
 Starting from $\hat\theta_{\text{obj}} = 0$, the mass estimate rises to 0.475 kg in 60 s and the
 tracking error falls back to the no-payload level.
