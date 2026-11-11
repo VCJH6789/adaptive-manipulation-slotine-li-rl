@@ -18,7 +18,7 @@ from isaaclab_assets import G1_CFG
 import warp as wp
 
 from pathlib import Path
-from validation.my_pin_model import PinModel
+from controller.my_pin_model import PinModel
 
 @configclass
 class G1ReachEnvCfg(DirectRLEnvCfg):
@@ -130,7 +130,7 @@ class G1ReachEnv(DirectRLEnv):
         # Pinnochio Model for G1
         # =====================================================
         # get the path to the URDF file
-        urdf_path = Path(__file__).resolve().parent / "g1_37dof.urdf"
+        urdf_path = Path(__file__).resolve().parents[1] / "assets" / "g1_37dof.urdf"
         self.pin_model = PinModel(str(urdf_path), self.robot.data.joint_names)
         self.dbg_step = 0
 

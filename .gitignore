@@ -22,6 +22,14 @@ checkpoints/
 
 # Generated robot model (built from Isaac Lab's G1 asset; not redistributed)
 *.urdf
+*.usd
+*.usda
+*.usdc
+assets/*
+!assets/.gitkeep
+
+# Run logs (tracking logs from experiments)
+*.npz
 
 # Media
 *.mp4
