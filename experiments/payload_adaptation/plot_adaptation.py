@@ -18,8 +18,8 @@ t = np.arange(len(e_fixed)) * dt
 
 fig, axes = plt.subplots(2, 1, sharex=True, figsize=(8, 6))
 
-axes[0].plot(t, e_fixed[:], linestyle='--', label="No_Adaptation")
-axes[0].plot(t, e_adapt[:], label="Adaptive Slotine-Li")
+axes[0].plot(t, e_fixed[:], linestyle='--', label="Adaptation-Off Slotine-Li")
+axes[0].plot(t, e_adapt[:], label="Adaptation-On Slotine-Li")
 axes[0].set_ylabel("Error ||q - q_des|| (rad)")
 axes[0].legend()
 
