@@ -15,16 +15,30 @@ guarantees bounded parameter estimates and convergence of the tracking error.
 ![Fixed vs adaptive controller under an unknown 0.5 kg payload](experiments/payload_adaptation/figures/payload_adaptation.png)
 
 *Left arm of the Unitree G1 (Isaac Sim) tracking a sinusoidal joint trajectory with an unknown
-0.5 kg payload on the palm. The fixed model-based controller sags persistently; the Slotine–Li
-adaptive controller estimates the payload online and recovers tracking.*
+0.5 kg payload on the palm. With adaptation off, the controller sags persistently; with
+adaptation on, it estimates the payload online and recovers tracking.*
 
-| Controller | Mean tracking error, last 10 s | Mass estimate after 60 s |
+| Controller | Mean ‖q − q_d‖ over the last 10 s | Mass estimate after 60 s |
 |---|---|---|
-| Model-based, no adaptation | 0.0254 rad | – |
-| Slotine–Li adaptive | 0.00089 rad (≈ 29× lower) | 0.475 kg (true 0.5 kg) |
+| Same controller, adaptation off ($\hat\theta_{\text{obj}} = 0$) | 0.0254 rad | – |
+| Same controller, adaptation on (Slotine–Li) | 0.00089 rad (≈ 96% lower) | 0.475 kg (true 0.5 kg, 4.9% error) |
 
-No policy is involved yet: the arm follows a scripted trajectory, so this isolates the
-controller.
+The two runs differ only in whether $\hat\theta_{\text{obj}}$ is updated: with adaptation off,
+only the feedback term $-Ks$ resists the payload, so the arm must sag before it can produce the
+extra torque. No policy is involved yet: the arm follows a scripted trajectory, so this isolates
+the controller.
+
+**Setup (main parameters)**
+
+| Parameter | Value |
+|---|---|
+| Gains | $\Lambda = 10\,I$, $K = \text{diag}(5, 5, 3, 3, 1)$ |
+| Adaptation rates | $\Gamma = \text{diag}(1, 0.1, 0.1, 0.1, 0, \dots, 0)$: mass and first moments adapted, inertias frozen |
+| Reference | $q_d = q_0 + A\sin(2\pi \cdot 0.25\,t)$, $A = (0.3, 0.2, 0.2, 0.3, 0.3)$ rad, around the default pose |
+| Payload | 0.5 kg added to the left palm link |
+| Simulation | 200 Hz physics, controller runs every physics step, 60 s per run |
+
+The full configuration is in [`experiments/payload_adaptation/`](experiments/payload_adaptation/).
 
 ## Method
 The left arm (5 joints) runs in effort mode; the hand stays on PD position control with a 1-D
