@@ -33,16 +33,16 @@ $\dot q_r = \dot q_d - \Lambda\tilde q$ and sliding variable $s = \dot q - \dot 
 
 **Control law**
 
-$$
+```math
 \tau = \underbrace{M(q)\ddot q_r + C(q,\dot q)\dot q_r + g(q)}_{\text{arm, known from the URDF}}
 + \underbrace{Y_{\text{obj}}(q,\dot q,\dot q_r,\ddot q_r)\,\hat\theta}_{\text{payload, estimated}} - K s
-$$
+```
 
 **Adaptation law**
 
-$$
+```math
 \dot{\hat\theta} = -\Gamma\, Y_{\text{obj}}^{\mathsf T}(q,\dot q,\dot q_r,\ddot q_r)\, s
-$$
+```
 
 The control law cancels the modelled dynamics and adds damping on $s$; the adaptation law updates
 the payload estimate $\hat\theta$ in the direction that reduces the tracking error. With
