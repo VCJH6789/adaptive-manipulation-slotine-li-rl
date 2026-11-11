@@ -31,26 +31,73 @@ The left arm (5 joints) runs in effort mode; the hand stays on PD position contr
 synergy. With tracking error $\tilde q = q - q_d$, reference velocity
 $\dot q_r = \dot q_d - \Lambda\tilde q$ and sliding variable $s = \dot q - \dot q_r = \dot{\tilde q} + \Lambda\tilde q$:
 
-**Control law**
+**1. Error dynamics.** The arm with the payload obeys $M(q)\ddot q + C(q,\dot q)\dot q + g(q) = \tau$,
+where $M$, $C$, $g$ include the payload. Writing $\dot q = \dot q_r + s$ and $\ddot q = \ddot q_r + \dot s$,
 
 ```math
-\tau = \underbrace{M(q)\ddot q_r + C(q,\dot q)\dot q_r + g(q)}_{\text{arm, known from the URDF}}
-+ \underbrace{Y_{\text{obj}}(q,\dot q,\dot q_r,\ddot q_r)\,\hat\theta}_{\text{payload, estimated}} - K s
+M(q)\,\dot s + C(q,\dot q)\,s = \tau - Y\theta,
+\qquad
+Y\theta = M(q)\ddot q_r + C(q,\dot q)\dot q_r + g(q)
 ```
 
-**Adaptation law**
+The dynamics are linear in the inertial parameters, and the parameters of the arm and of the
+payload simply add, so the forcing term separates into a known arm part and an unknown payload
+part:
 
 ```math
-\dot{\hat\theta} = -\Gamma\, Y_{\text{obj}}^{\mathsf T}(q,\dot q,\dot q_r,\ddot q_r)\, s
+Y\theta = \underbrace{Y_a\,\theta_a}_{\text{arm, known}} + \underbrace{Y_{\text{obj}}\,\theta_{\text{obj}}}_{\text{payload, unknown}},
+\qquad
+Y_a\,\theta_a = M_a(q)\ddot q_r + C_a(q,\dot q)\dot q_r + g_a(q)
 ```
 
-The control law cancels the modelled dynamics and adds damping on $s$; the adaptation law updates
-the payload estimate $\hat\theta$ in the direction that reduces the tracking error. With
-$V = \tfrac12 s^{\mathsf T} M s + \tfrac12\tilde\theta^{\mathsf T}\Gamma^{-1}\tilde\theta$, these give
-$\dot V = -s^{\mathsf T} K s \le 0$, so $s$ and $\tilde\theta$ stay bounded, and for a bounded,
-twice-differentiable reference trajectory, Barbalat's lemma gives $s \to 0$ and the tracking error
-converges. The parameter estimates stay bounded but need not
-converge to the true values unless the motion is sufficiently exciting.
+where $\theta_a$ comes from the URDF, $\theta_{\text{obj}}$ holds the payload's 10 inertial
+parameters, and both regressors are evaluated at $(q,\dot q,\dot q_r,\ddot q_r)$.
+
+| Symbol | Meaning |
+|---|---|
+| $\theta_a$ | arm parameters (known, from the URDF) |
+| $\theta_{\text{obj}}$ | true payload parameters (constant, unknown) |
+| $\hat\theta_{\text{obj}}$ | estimate of the payload parameters, updated online |
+| $\tilde\theta_{\text{obj}} = \hat\theta_{\text{obj}} - \theta_{\text{obj}}$ | estimation error |
+
+**2. Control law.** Use the known arm term as it is, the current estimate $\hat\theta_{\text{obj}}$
+for the payload term, and add damping on $s$:
+
+```math
+\tau = Y_a\,\theta_a + Y_{\text{obj}}\,\hat\theta_{\text{obj}} - K s
+```
+
+**3. Adaptation law.**
+
+```math
+\dot{\hat\theta}_{\text{obj}} = -\Gamma\, Y_{\text{obj}}^{\mathsf T}\, s
+```
+
+**4. Closed loop and stability.** Start from the error dynamics with the split forcing term:
+
+```math
+M\dot s + Cs = \tau - Y_a\theta_a - Y_{\text{obj}}\theta_{\text{obj}}
+```
+
+Substitute the control law for $\tau$:
+
+```math
+M\dot s + Cs = (Y_a\theta_a + Y_{\text{obj}}\hat\theta_{\text{obj}} - Ks) - Y_a\theta_a - Y_{\text{obj}}\theta_{\text{obj}}
+```
+
+The arm terms $Y_a\theta_a$ cancel, leaving only the payload estimation error
+$\tilde\theta_{\text{obj}} = \hat\theta_{\text{obj}} - \theta_{\text{obj}}$:
+
+```math
+M\dot s + Cs + Ks = Y_{\text{obj}}\tilde\theta_{\text{obj}}
+```
+
+With $V = \tfrac12 s^{\mathsf T} M s + \tfrac12\tilde\theta_{\text{obj}}^{\mathsf T}\Gamma^{-1}\tilde\theta_{\text{obj}}$,
+the skew-symmetry of $\dot M - 2C$ and the adaptation law give $\dot V = -s^{\mathsf T} K s \le 0$,
+so $s$ and $\tilde\theta_{\text{obj}}$ stay bounded. For a bounded, twice-differentiable reference
+trajectory, Barbalat's lemma then gives $s \to 0$, and the tracking error converges. The
+parameter estimates stay bounded but need not converge to the true values unless the motion is
+sufficiently exciting.
 
 - **Arm model:** computed with Pinocchio from a URDF converted from the Isaac Lab USD; joints are
   matched to Isaac by name, and motor armature is included.
@@ -79,7 +126,7 @@ converge to the true values unless the motion is sufficiently exciting.
    included in the arm model at their measured positions and velocities, but the effect of the
    hand's accelerations on the arm is neglected.
 7. **No torque saturation.** Commanded torques stay within the joint effort limits. The analysis
-   is in continuous time; the controller runs at 200 Hz with Euler integration of $\hat\theta$.
+   is in continuous time; the controller runs at 200 Hz with Euler integration of $\hat\theta_{\text{obj}}$.
 
 ## Status
 - [x] PPO re-implemented from scratch in PyTorch, following the rsl_rl architecture
